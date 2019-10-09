@@ -13,13 +13,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.abank.backend.enumeration.Status;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Table(name = "parcela")
-@Getter @Setter
+@Setter @Getter
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Parcela {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,10 +30,10 @@ public class Parcela {
     Status status;
     LocalDate dataCadastro;
     LocalDate dataVencimento;
+    LocalDate dataPagamento;
     BigDecimal valorTotal;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="id_emprestimo", nullable=false)
+    @JoinColumn(name="id_emprestimo")
     Emprestimo emprestimo;
-
 }
