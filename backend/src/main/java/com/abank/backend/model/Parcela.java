@@ -11,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import com.abank.backend.enumeration.Status;
 
@@ -19,20 +18,19 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "emprestimo")
+@Table(name = "parcela")
 @Getter @Setter
-public class Emprestimo {
+public class Parcela {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     Status status;
-    BigDecimal valorTotal;
     LocalDate dataCadastro;
+    LocalDate dataVencimento;
+    BigDecimal valorTotal;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="id_cliente", nullable=false)
-    Cliente cliente;
+    @JoinColumn(name="id_emprestimo", nullable=false)
+    Emprestimo emprestimo;
 
-    @Transient BigDecimal valorPago;
-    @Transient BigDecimal valorApagar;
 }
