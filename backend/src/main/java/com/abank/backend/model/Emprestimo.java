@@ -20,7 +20,9 @@ import javax.persistence.Transient;
 
 import com.abank.backend.enumeration.Status;
 import com.abank.backend.enumeration.TipoEmprestimo;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import lombok.Getter;
@@ -42,10 +44,12 @@ public class Emprestimo {
     @Enumerated(EnumType.STRING)
     TipoEmprestimo tipoEmprestimo; 
     
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name="id_cliente")
     Cliente cliente;
 
+    @JsonBackReference
     @OneToMany(mappedBy="emprestimo",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     Set<Parcela> parcela;
 

@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -31,8 +32,11 @@ public class Cliente {
     String nome;
     LocalDate dataCadastro;
 
+
+    @JsonBackReference
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     Set<Emprestimo> emprestimos;
+
 
     @Transient BigDecimal valorTotalSolicitado;
     @Transient BigDecimal valorTotalPago;
