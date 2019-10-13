@@ -1,15 +1,10 @@
 package com.abank.backend.controller;
 
-import java.beans.FeatureDescriptor;
-import java.util.stream.Stream;
+import com.abank.backend.model.Emprestimo;
+import com.abank.backend.model.Emprestimo;
+import com.abank.backend.repository.EmprestimoRepository;
+import com.abank.backend.service.EmprestimoService;
 
-import com.abank.backend.model.Cliente;
-import com.abank.backend.repository.ClienteRepository;
-import com.abank.backend.service.ClienteService;
-
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -26,36 +21,41 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/clientes")
-public class ClienteController {
+@RequestMapping("/api/emprestimos")
+public class EmprestimoController {
 
     @Autowired
-    ClienteRepository repository;
+    EmprestimoRepository repository;
 
     @Autowired
-    ClienteService service;
+    EmprestimoService service;
 
+
+    @PostMapping("/calcularEmprestimo")
+    public ResponseEntity<Emprestimo> calcularEmprestimo(@RequestBody Emprestimo entity) {
+        return ResponseEntity.ok(service.calcularEmprestimo(entity));
+    }
 
     @PostMapping("")
-    public ResponseEntity<Page<Cliente>> findAll(@RequestParam(value = "page", defaultValue = "0") Integer page,
+    public ResponseEntity<Page<Emprestimo>> findAll(@RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "15") Integer size,
-            @RequestBody(required = false) Cliente entity) {
+            @RequestBody(required = false) Emprestimo entity) {
         if(entity == null){
-            entity = new Cliente();
+            entity = new Emprestimo();
         }
         return ResponseEntity.ok(repository.findAll(Example.of(entity), PageRequest.of(page, size)));
     }
 
     @PostMapping("/")
-    public ResponseEntity<Cliente> save(@RequestBody Cliente entity) {
+    public ResponseEntity<Emprestimo> save(@RequestBody Emprestimo entity) {
         return ResponseEntity.ok(repository.save(entity));
     }
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Cliente> update(@RequestBody Cliente entity, @PathVariable Long id) {
-        return repository.findById(id).map(cliente -> {
-            return ResponseEntity.ok(repository.save(cliente));
+    public ResponseEntity<Emprestimo> update(@RequestBody Emprestimo entity, @PathVariable Long id) {
+        return repository.findById(id).map(emprestimo -> {
+            return ResponseEntity.ok(repository.save(emprestimo));
         }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 

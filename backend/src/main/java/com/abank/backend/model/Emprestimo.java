@@ -18,11 +18,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.abank.backend.enumeration.Status;
 import com.abank.backend.enumeration.TipoEmprestimo;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.abank.backend.enumeration.TipoJuros;
+import com.abank.backend.enumeration.TipoSituacao;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import lombok.Getter;
@@ -36,20 +35,27 @@ public class Emprestimo {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
-    Status status;
-    BigDecimal valorTotal;
     LocalDate dataCadastro;
     BigDecimal taxa;
+    Integer quantidadeParcelas;
+    BigDecimal valorTotal;
+    BigDecimal valorSolicitado;
 
+    
+    @Enumerated(EnumType.STRING)
+    TipoSituacao tipoSituacao;
+    
     @Enumerated(EnumType.STRING)
     TipoEmprestimo tipoEmprestimo; 
+
+    @Enumerated(EnumType.STRING)
+    TipoJuros tipoJuros; 
+
     
-    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name="id_cliente")
     Cliente cliente;
 
-    @JsonBackReference
     @OneToMany(mappedBy="emprestimo",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     Set<Parcela> parcela;
 

@@ -1,7 +1,7 @@
 package com.abank.backend.enumeration;
 
 
-public enum Status  {
+public enum TipoSituacao  {
     Cadastrado,
     Apagar,
     Pago,
